@@ -1,82 +1,98 @@
-/* write a c program to create a singly linked list by adding the nodes to the right hand side and then print the list*/
 
 #include<stdio.h>
-
 #include<stdlib.h>
 
-void insertBeginning(int);
-void display();
+struct node{
+  int data;
+  struct node* link;
+};
 
-struct Node
-{
-   int data;
-   struct Node *next;
-}*head = NULL;
-
-void main()
-{
-   int choice,value;
-   
-   while(1){
-   mainMenu: printf("\n\n****** MENU ******\n1. Insert\n2. Display\n3. Exit\nEnter your choice: \n");
-   scanf("%d",&choice);
-   switch(choice)
-   {
-    case 1: 	
-           printf("Enter the value to be insert: ");
-           scanf("%d",&value);
-           insertBeginning(value);
-           break;
-
-   case 2:
-          display();
-          break;
-
-   case 3:
-         printf("Program finished\n");
-         return 0;
-         
+void print(struct node* head){
+    struct node*ptr;
+    ptr=head;
+    
+    while(ptr != NULL){
+      printf("%d ",ptr->data);
+      ptr=ptr->link;
+    }
 }
+
+void altdel(struct node*head){
  
+    if (head == NULL) 
+        return; 
+  
+    
+    struct node *prev = head; 
+    struct node *node = head->link; 
+  
+    while (prev != NULL && node != NULL) 
+    { 
+        
+        prev->link = node->link; 
+  
+        prev = prev->link; 
+        if (prev != NULL) 
+            node = prev->link; 
+    } 
 }
- 
+
+   void move_to_front(struct node* head){
+
+   struct node*p,*q;
+   q=NULL;
+   p=head;
+
+   while(p->link != NULL);
+   {
+      q=p;
+      p=p->link;
+   }
+   p->link=head;
+   q->link=NULL;
+   head=p;
+
+}
+
+int main(){
+
+  struct node*head=malloc(sizeof(struct node));
+  
+  head->data=10;
+  head->link=NULL;
+
+  struct node*current=malloc(sizeof(struct node));
+  current->data=20;
+  current->link=NULL;
+  head->link=current;
+
+  current=malloc(sizeof(struct node));
+  current->data=30;
+  current->link=NULL;
+  head->link->link=current;
+
+  
+  current=malloc(sizeof(struct node));
+  current->data=40;
+  current->link=NULL;
+  head->link->link->link=current;
+
+  
+  current=malloc(sizeof(struct node));
+  current->data=50;
+  current->link=NULL;
+  head->link->link->link->link=current;
+
+  printf("\nList before deleting the alternate nodes\n");
+  print(head);
+  altdel(head);
+  printf("\nList after deleting the alternate nodes\n");
+  print(head);
+  
+return 0;
+
 }
 
 
-void insertBeginning(int value)
-{
-   struct Node *newNode;
-   newNode = (struct Node*)malloc(sizeof(struct Node));
-   newNode->data = value;
-   if(head == NULL)
-   {
-      newNode->next = NULL;
-      head = newNode;
-   }
-   else
-   {
-      newNode->next = head;
-      head = newNode;
-   }
-   printf("\nOne node inserted!!!\n");
-}
 
-void display()
-{
-   if(head == NULL)
-   {
-      printf("\nList is Empty\n");
-   }
-   else
-   {
-      struct Node *temp = head;
-      printf("\n\nList elements are - \n");
-      while(temp->next != NULL)
-      {
-	 printf("%d --->",temp->data);
-	 temp = temp->next;
-      }
-      printf("%d --->NULL",temp->data);
-   }
-}
 
